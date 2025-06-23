@@ -75,3 +75,29 @@ void mostrarMano(const Jugador &jugador){
         cout << jugador.mano[i].nombre << " ";
     cout << "  Puntos: " << jugador.puntos << endl;
 }
+
+// Función para obtener la fecha actual
+string obtenerFecha(){
+    time_t t = time(0);
+    tm* now = localtime(&t);
+    char buffer[20];
+    strftime(buffer, 20, "%Y-%m-%d", now);
+    return buffer;
+}
+
+
+// Función para guardar el resultado de la partida
+void guardarPartida(Partida partida){
+    ofstream archivo("historial.txt", ios::app);
+    archivo << left << setw(15) << partida.nombreJugador
+            << setw(10) << partida.resultado
+            << setw(12) << partida.fecha << endl;
+    archivo.close();
+}
+
+
+// Función principal para ejecutar una partida completa
+void jugar(){
+    srand(time(0));
+    Jugador jugador = {"Jugador", nullptr, 0, 0};
+    Jugador banca = {"Banca", nullptr, 0, 0};
