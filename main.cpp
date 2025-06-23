@@ -155,3 +155,39 @@ void jugar(){
     delete[] jugador.mano;
     delete[] banca.mano;
 }
+
+// Función para ver el historial de partidas guardadas
+void verHistorial(){
+    ifstream archivo("historial.txt");
+    string nombre, resultado, fecha;
+
+    cout << left << setw(15) << "Jugador" << setw(10) << "Resultado" << setw(12) << "Fecha" << endl;
+    cout << "----------------------------------------" << endl;
+
+    while(archivo >> nombre >> resultado >> fecha){
+        cout << left << setw(15) << nombre << setw(10) << resultado << setw(12) << fecha << endl;
+    }
+    archivo.close();
+}
+
+int main(){
+    int opcion;
+    do{
+        cout << "\n--- BLACKJACK ---\n";
+        cout << "1.- Jugar\n";
+        cout << "2.- Ver historial\n";
+        cout << "3.- Salir\n";
+        cout << "Elige una opcion: ";
+        cin >> opcion;
+        cin.ignore();
+
+        switch (opcion){
+            case 1: jugar(); break;
+            case 2: verHistorial(); break;
+            case 3: cout << "Gracias por jugar.\n"; break;
+            default: cout << "Opcion no valida.\n";
+        }
+    }while(opcion != 3);
+
+    return 0;
+}
