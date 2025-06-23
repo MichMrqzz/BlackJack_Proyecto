@@ -101,3 +101,57 @@ void jugar(){
     srand(time(0));
     Jugador jugador = {"Jugador", nullptr, 0, 0};
     Jugador banca = {"Banca", nullptr, 0, 0};
+
+   string nombre; // Obtener nombre del jugador
+    cout << "Ingresa tu nombre: ";
+    getline(cin, nombre);
+    jugador.nombre = nombre;
+
+    // Repartir cartas iniciales
+    agregarCarta(jugador);
+    agregarCarta(jugador);
+    agregarCarta(banca);
+    agregarCarta(banca);
+
+    // Turno del jugador
+    char opcion;
+    do{
+        mostrarMano(jugador);
+        if(jugador.puntos > 21){
+            cout << "Te pasaste de 21. Pierdes." << endl;
+            guardarPartida({jugador.nombre, "Perdiste", obtenerFecha()});
+            return;
+        }
+        cout << "Deseas otra carta? (h = Hit / s = Stand): ";
+        cin >> opcion;
+        if(opcion == 'h'){
+            agregarCarta(jugador);
+        }
+    }while(opcion == 'h');
+
+    // Turno de la banca
+    while(banca.puntos < 17){
+        agregarCarta(banca);
+    }
+
+    mostrarMano(jugador);
+    mostrarMano(banca);
+
+    // Resultados
+    string resultado;
+    if(banca.puntos > 21 || jugador.puntos > banca.puntos){
+        cout << "Ganaste!!!" << endl;
+        resultado = "Ganaste";
+    } else if(jugador.puntos < banca.puntos){
+        cout << "La banca gana." << endl;
+        resultado = "Perdiste";
+    } else{
+        cout << "Empate. Gana la banca." << endl;
+        resultado = "Perdiste";
+    }
+
+    // Guardar resultado en el historial
+    guardarPartida({jugador.nombre, resultado, obtenerFecha()});
+    delete[] jugador.mano;
+    delete[] banca.mano;
+}
